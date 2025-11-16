@@ -1,0 +1,44 @@
+/* Container do menu */
+/* Fundo do menu */
+.menu-container {
+    -fx-background-color: linear-gradient(to bottom, #162447, #1f4068, #1b1b2f);
+}
+
+.titulo-menu {
+    -fx-font-size: 52px;
+    -fx-fill: #ffffff;
+    -fx-font-weight: bold;
+
+
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 12, 0.2, 0, 3);
+}
+
+.botao-menu {
+    -fx-background-color: rgba(255, 255, 255, 0.05);
+    -fx-cursor: hand;
+    -fx-border-color: #ffffff;
+    -fx-border-width: 2px;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-padding: 12px 22px;
+
+    -fx-transition: all 0.3s ease;
+
+
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+.botao-menu:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.25);
+    -fx-border-color: #e0e0e0;
+
+    -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.35), 10, 0.15, 0, 0);
+}
+
+.botao-menu:pressed {
+    -fx-background-color: rgba(255, 255, 255, 0.35);
+    -fx-translate-y: 2px;
+    -fx-effect: none;
+}
