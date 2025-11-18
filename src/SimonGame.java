@@ -14,10 +14,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
+import javafx.scene.layout.HBox;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import javafx.scene.text.Font;
+
 
 public class SimonGame extends Application {
 
@@ -45,6 +47,13 @@ public class SimonGame extends Application {
 
         stage.setTitle("Genius - JavaFX");
 
+        // 1. --- Título ---
+        Label titulo = new Label("Jogo Genius");
+        titulo.setFont(Font.font("Arial", 36));
+        titulo.setTextFill(Color.WHITE);
+        titulo.setStyle("-fx-padding: 20 0 10 0;"); // Espaçamento acima e abaixo
+
+        // --- Tabuleiro (GridPane) ---
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
@@ -63,22 +72,40 @@ public class SimonGame extends Application {
             grid.add(r, i % 2, i / 2);
         }
 
-        Button startBtn = new Button("Start");
-        startBtn.setStyle("-fx-background-color:#483d8b; -fx-text-fill:white; -fx-font-size:18px;");
-        startBtn.setOnAction(e -> startNewGame());
+        // --- Botões de Controle ---
+        Button btnReiniciar = new Button("Reiniciar Jogo");
+        btnReiniciar.setStyle("-fx-background-color: white; -fx-text-fill: black; -fx-font-size: 15");
+        btnReiniciar.setMinSize(180, 50); // Exemplo de aumento
+        btnReiniciar.setOnAction(e -> startNewGame());
 
-        VBox layout = new VBox(20, roundLabel, grid, startBtn);
+        Button btnVoltarMenu = new Button("Voltar ao Menu");
+        btnVoltarMenu.setStyle("-fx-background-color: white; -fx-text-fill: black; -fx-font-size: 15");
+        btnVoltarMenu.setMinSize(180, 50); // Exemplo de aumento
+        btnVoltarMenu.setOnAction(e -> voltarAoMenu());
+
+        HBox controles = new HBox(20, btnReiniciar, btnVoltarMenu);
+        controles.setAlignment(Pos.CENTER);
+        controles.setStyle("-fx-padding: 10 0 20 0;"); // Espaçamento abaixo para afastar da borda
+
+        // Botão Start que será removido e o jogo iniciará no primeiro clique
+        // Opcional: Se quiser que o jogo comece imediatamente, você pode chamar startNewGame() aqui
+
+        // --- Layout Principal (VBox) ---
+        // Ordem: Título, roundLabel, Tabuleiro, Controles
+        VBox layout = new VBox(20, titulo, roundLabel, grid, controles);
         layout.setAlignment(Pos.CENTER);
         layout.setStyle("-fx-background-color:#222;");
 
         roundLabel.setTextFill(Color.WHITE);
         roundLabel.setStyle("-fx-font-size: 22px;");
 
-        Scene scene = new Scene(layout, 450, 550);
+        Scene scene = new Scene(layout, 800, 800);
         stage.setScene(scene);
         stage.show();
-    }
 
+        // Inicia o jogo imediatamente ao carregar
+        startNewGame();
+    }
     private void startNewGame() {
         sequence.clear();
         playerMoves.clear();
@@ -184,10 +211,10 @@ public class SimonGame extends Application {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Fim de jogo");
             alert.setHeaderText("Você errou!");
-            alert.setContentText("Deseja voltar ao menu?");
+            alert.setContentText("O que você deseja ?");
 
-            ButtonType sim = new ButtonType("Sim");
-            ButtonType nao = new ButtonType("Não");
+            ButtonType sim = new ButtonType("Menu");
+            ButtonType nao = new ButtonType("Jogar Novamente");
 
             alert.getButtonTypes().setAll(sim, nao);
 
@@ -213,6 +240,17 @@ public class SimonGame extends Application {
             case 1 -> SoundGenerator.playTone(554, 300); // Vermelho
             case 2 -> SoundGenerator.playTone(659, 300); // Amarelo
             case 3 -> SoundGenerator.playTone(784, 300); // Verde
+        }
+    }
+
+    private void voltarAoMenu() {
+
+        try {
+
+            new Menu().start(new Stage());
+            primaryStage.close(); // Fecha a janela do Jogo Genius
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 

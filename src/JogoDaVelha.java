@@ -5,11 +5,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 
 public class JogoDaVelha extends Application {
 
@@ -22,28 +26,44 @@ public class JogoDaVelha extends Application {
 
     @Override
     public void start(Stage stage) {
-        AudioPlayer.playLoop("/musica_velha.wav"); // música do jogo da velha
+        AudioPlayer.playLoop("/musica_velha.wav");
 
-        this.primaryStage = stage; // salvar referência
+        this.primaryStage = stage;
         stage.setTitle("Jogo da Velha - JavaFX");
 
+        // 1. Layout Principal: BorderPane
+        BorderPane root = new BorderPane();
+
+        // 2. Título (TOP)
+        VBox tituloBox = criarTitulo();
+        root.setTop(tituloBox);
+
+        // 3. Tabuleiro (CENTER)
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(5);
         grid.setVgap(5);
         inicializarTabuleiro(grid);
 
-        Scene scene = new Scene(grid, 400, 400);
+        root.setCenter(grid); // Coloca o tabuleiro no centro
+
+        // 4. Controles (BOTTOM)
+        HBox controles = criarBotoesControle(); // O HBox que já criamos
+        root.setBottom(controles); // Coloca os botões na parte de baixo
+
+        // O BorderPane será o root da Scene
+        Scene scene = new Scene(root, 800, 800);
         stage.setScene(scene);
         stage.show();
     }
+
 
     private void inicializarTabuleiro(GridPane grid) {
         for (int linha = 0; linha < 3; linha++) {
             for (int coluna = 0; coluna < 3; coluna++) {
                 Button btn = new Button("");
                 btn.setFont(Font.font("Times New Roman", 48));
-                btn.setMinSize(120, 120);
+                btn.setMinSize(150, 150);
                 btn.setStyle("-fx-background-color: rgb(76,74,74); -fx-text-fill: #55483b;");
 
                 int l = linha;
@@ -216,6 +236,42 @@ public class JogoDaVelha extends Application {
                 p2.play();
             }
         }
+    }
+
+    private VBox criarTitulo() {
+        Label titulo = new Label("Jogo da Velha");
+        titulo.setFont(Font.font(36));
+        titulo.setStyle("-fx-text-fill: #1a1a1a;");
+
+        VBox tituloBox = new VBox(titulo);
+        tituloBox.setAlignment(Pos.CENTER);
+        // Adiciona um padding para afastar o título das bordas e do tabuleiro
+        tituloBox.setStyle("-fx-padding: 20 0 10 0; -fx-background-color: #f0f0f0;");
+        return tituloBox;
+    }
+
+    private HBox criarBotoesControle() {
+        Button btnReiniciar = new Button("Reiniciar Jogo");
+        btnReiniciar.setOnAction(e -> reiniciarJogo());
+
+        // Ação do botão Voltar ao Menu
+        Button btnVoltarMenu = new Button("Voltar ao Menu");
+        btnVoltarMenu.setOnAction(e -> {
+            AudioPlayer.stop(); // Parar a música do Jogo da Velha
+            try {
+                new Menu().start(new Stage()); // Abrir o Menu
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            } finally {
+                primaryStage.close(); // Fechar a janela atual
+            }
+        });
+
+        HBox controles = new HBox(15, btnReiniciar, btnVoltarMenu); // 15px de espaçamento
+        controles.setAlignment(Pos.CENTER); // Centraliza os botões na parte inferior
+        // Adiciona padding para afastar os botões do tabuleiro e da borda inferior
+        controles.setStyle("-fx-padding: 10 0 20 0;");
+        return controles;
     }
 
     public static void main(String[] args) {

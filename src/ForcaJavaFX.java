@@ -44,6 +44,7 @@ public class ForcaJavaFX extends Application {
 
     public ForcaJavaFX() {}
 
+
     @Override
     public void start(Stage primaryStage) {
         // Para garantir que nenhuma música anterior continue
@@ -66,16 +67,21 @@ public class ForcaJavaFX extends Application {
         lblProgresso.setFont(Font.font(24));
 
         lblErros = new Label("Letras erradas: ");
+        lblErros.setFont(Font.font(16));
 
         topBox.getChildren().addAll(titulo, lblProgresso, lblErros);
         root.setTop(topBox);
 
-        canvas = new Canvas(300, 300);
+        // Ajuste 1: Aumentar o Canvas para ocupar melhor o centro (400x400)
+        canvas = new Canvas(400, 400);
         desenharForca();
 
         HBox centerBox = new HBox(canvas);
         centerBox.setAlignment(Pos.CENTER);
         centerBox.setPadding(new Insets(12));
+
+        // Ajuste 2: Garantir que o HBox use a altura completa do centro
+        centerBox.setFillHeight(true);
         root.setCenter(centerBox);
 
         VBox bottom = new VBox(8);
@@ -83,11 +89,15 @@ public class ForcaJavaFX extends Application {
         teclado.setHgap(6);
         teclado.setVgap(6);
         teclado.setPadding(new Insets(6));
-        teclado.setPrefWrapLength(420);
+
+        // Ajuste 3: Aumentar o wrap length para ~750 para usar a largura de 800
+        teclado.setPrefWrapLength(750);
 
         for (char c = 'A'; c <= 'Z'; c++) {
             Button btn = new Button(String.valueOf(c));
             btn.setPrefWidth(40);
+            // Opcional: Aumentar a altura dos botões para preencher melhor o espaço vertical
+            btn.setPrefHeight(40);
             btn.setOnAction(e -> {
                 btn.setDisable(true);
                 processarPalpite(btn.getText().charAt(0), primaryStage);
@@ -112,10 +122,18 @@ public class ForcaJavaFX extends Application {
         btnVoltarMenu.setOnAction(e -> voltarAoMenu(primaryStage));
 
         controles.getChildren().addAll(btnReiniciar, btnDesistir, btnVoltarMenu);
-        bottom.getChildren().addAll(new ScrollPane(teclado), controles);
+
+        // O ScrollPane é necessário se o teclado for muito grande
+        ScrollPane scrollTeclado = new ScrollPane(teclado);
+        // Remove as barras de rolagem desnecessárias do ScrollPane (se quiser)
+        scrollTeclado.setFitToWidth(true);
+        scrollTeclado.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+
+        bottom.getChildren().addAll(scrollTeclado, controles);
         root.setBottom(bottom);
 
-        Scene scene = new Scene(root, 520, 620);
+        // Mantenha a Scene com 800x800
+        Scene scene = new Scene(root, 800, 800);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Forca - JavaFX");
         primaryStage.show();

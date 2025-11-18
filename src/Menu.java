@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color; // se quiser mudar a cor do título
 import javafx.scene.text.Font;   // se quiser mudar a fonte/tamanho
+import javafx.scene.layout.HBox;
 
 
 public class Menu extends Application {
@@ -21,8 +22,10 @@ public class Menu extends Application {
         stage.setTitle("Menu de Jogos");
 
         Label titulo = new Label("Menu de Jogos");
+        titulo.getStyleClass().add("titulo-menu");
+
         titulo.setFont(Font.font("Arial", 48));  // tamanho grande
-        titulo.setTextFill(Color.BLACK);         // cor branca
+        titulo.setTextFill(Color.BLACK);
         titulo.setAlignment(Pos.CENTER);
 
         Image imgVelha = new Image(getClass().getResourceAsStream("/jogo_da_velha.png"), 180, 0, true, true);
@@ -75,10 +78,20 @@ public class Menu extends Application {
             stage.close();
         });
 
-        VBox layout = new VBox(20,titulo, btnJogoVelha, btnGenius, btnJogoForca, btnSair);
+        HBox linha2 = new HBox(30, btnGenius, btnJogoForca);
+        linha2.setAlignment(Pos.CENTER);
+
+        VBox layout = new VBox(20, titulo, linha2, btnJogoVelha, btnSair);
         layout.setAlignment(Pos.CENTER);
+        layout.getStyleClass().add("menu-container");
+
+        btnJogoVelha.getStyleClass().add("botao-menu");
+        btnGenius.getStyleClass().add("botao-menu");
+        btnJogoForca.getStyleClass().add("botao-menu");
+        btnSair.getStyleClass().add("botao-menu");
 
         Scene scene = new Scene(layout, 800, 800);
+        scene.getStylesheets().add(getClass().getResource("menu.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
     }
