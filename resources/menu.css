@@ -1,0 +1,110 @@
+/* ================================================
+   MENU — ESTILO ARCADE AZUL
+   ================================================ */
+
+.menu-container {
+    -fx-background-image: url("menufundo.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+
+    /* Fundo com atmosfera arcade azul */
+    -fx-background-color: linear-gradient(to bottom, #06081f, #131f55, #06081f);
+}
+
+/* ================================================
+   TÍTULO DO MENU — ARCADE AZUL NEON (MAIS ESCURO)
+   ================================================ */
+
+.titulo-menu {
+    -fx-font-size: 80px;
+    -fx-text-fill: #2b6bb8; /* Azul neon mais escuro */
+    -fx-font-family: Arcade;
+    -fx-font-weight: bold;
+
+    /* Brilho mais discreto */
+    -fx-effect: dropshadow(gaussian, rgba(30,80,160,0.6), 20, 0.25, 0, 0);
+}
+
+/* ================================================
+   BOTÕES — ARCADE AZUL, BORDAS NEON
+   ================================================ */
+
+.botao-menu {
+    -fx-background-color: rgba(255, 255, 255, 0.10);
+    -fx-cursor: hand;
+
+    /* borda neon azul */
+    -fx-border-color: #4aa8ff;
+    -fx-border-width: 3px;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+
+    -fx-padding: 12px 22px;
+
+    -fx-font-family: Arcade;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+
+    -fx-effect: dropshadow(gaussian, rgba(74,168,255,0.45), 15, 0.2, 0, 0);
+}
+
+/* ================================================
+   HOVER — LUZ AZUL MAIS FORTE
+   ================================================ */
+
+.botao-menu:hover {
+    -fx-background-color: rgba(74, 168, 255, 0.25);
+    -fx-border-color: #8ccfff;
+
+    -fx-effect: dropshadow(gaussian, rgba(74,168,255,0.8), 18, 0.3, 0, 0);
+}
+
+/* ================================================
+   PRESS — AFUNDA LEVE
+   ================================================ */
+
+.botao-menu:pressed {
+    -fx-background-color: rgba(74, 168, 255, 0.35);
+    -fx-translate-y: 2px;
+    -fx-effect: none;
+}
+
+/* ================================================
+   BOTÃO SAIR — ARCADE VERMELHO NEON
+   ================================================ */
+
+.botao-sair {
+    -fx-background-color: rgba(255, 0, 0, 0.2);
+    -fx-border-color: #ff4d4d;
+    -fx-border-width: 4px;
+    -fx-border-radius: 25px;
+    -fx-background-radius: 25px;
+
+    -fx-text-fill: #ff8080;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+
+    -fx-effect: dropshadow(gaussian, rgba(255, 50, 50, 0.6), 20, 0.3, 0, 0);
+}
+
+.botao-sair:hover {
+    -fx-background-color: rgba(255, 80, 80, 0.35);
+    -fx-border-color: #ff9999;
+    -fx-effect: dropshadow(gaussian, rgba(255, 50, 50, 0.9), 25, 0.3, 0, 0);
+}
+
+.botao-sair:pressed {
+    -fx-background-color: rgba(255, 0, 0, 0.4);
+    -fx-translate-y: 3px;
+}
+
+.titulo-menu {
+    -fx-font-size: 80px;
+    -fx-text-fill: #9cf2ff;
+    -fx-font-family: Arcade;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, #00d4ff, 40, 0.5, 0, 0);
+}
+

@@ -1,6 +1,8 @@
 import javax.sound.sampled.*;
 
 public class SoundGenerator {
+    static SourceDataLine currentLine;
+
     public static void playTone(double freq, int durationMs) {
         try {
             float sampleRate = 44100;
@@ -23,4 +25,7 @@ public class SoundGenerator {
             System.out.println("Erro ao tocar som: " + e.getMessage());
         }
     }
+
+
+
 }

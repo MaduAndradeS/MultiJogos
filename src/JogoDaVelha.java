@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -17,54 +18,56 @@ import javafx.scene.layout.HBox;
 
 public class JogoDaVelha extends Application {
 
-    private Stage primaryStage; // guardamos a stage pra poder fechá-la ao voltar ao menu
+    private Stage primaryStage;
     private Button[][] botoes = new Button[3][3];
     private String jogadorAtual = "X";
     private boolean jogoAtivo = true;
 
-    private final Color azulEscuro = Color.rgb(0, 0, 0);
+    // Cores neon
+    private final String NEON_X = "rgb(255,60,60)";      // vermelho neon
+    private final String NEON_O = "rgb(70,170,255)";     // azul neon
+    private final String NEON_ROXO = "rgb(160,60,255)";  // roxo neon
 
     @Override
     public void start(Stage stage) {
         AudioPlayer.playLoop("/musica_velha.wav");
 
         this.primaryStage = stage;
-        stage.setTitle("Jogo da Velha - JavaFX");
+        stage.setTitle("Jogo da Velha");
 
-        // 1. Layout Principal: BorderPane
         BorderPane root = new BorderPane();
+        root.setStyle("-fx-background-image: url('/fundovelha.png');" +
+                "-fx-background-size: cover;" +
+                "-fx-background-repeat: no-repeat;");
 
-        // 2. Título (TOP)
-        VBox tituloBox = criarTitulo();
-        root.setTop(tituloBox);
+        root.setTop(criarTitulo());
 
-        // 3. Tabuleiro (CENTER)
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(5);
         grid.setVgap(5);
+
         inicializarTabuleiro(grid);
+        root.setCenter(grid);
 
-        root.setCenter(grid); // Coloca o tabuleiro no centro
+        root.setBottom(criarBotoesControle());
 
-        // 4. Controles (BOTTOM)
-        HBox controles = criarBotoesControle(); // O HBox que já criamos
-        root.setBottom(controles); // Coloca os botões na parte de baixo
-
-        // O BorderPane será o root da Scene
         Scene scene = new Scene(root, 800, 800);
         stage.setScene(scene);
         stage.show();
     }
 
-
     private void inicializarTabuleiro(GridPane grid) {
         for (int linha = 0; linha < 3; linha++) {
             for (int coluna = 0; coluna < 3; coluna++) {
+
                 Button btn = new Button("");
-                btn.setFont(Font.font("Times New Roman", 48));
+                btn.setFont(Font.font("Arcade", 50));
                 btn.setMinSize(150, 150);
-                btn.setStyle("-fx-background-color: rgb(76,74,74); -fx-text-fill: #55483b;");
+
+                // Cor neutra roxa escura neon
+                btn.setStyle("-fx-background-color: rgb(30,0,45);" +   // roxo escuro
+                        "-fx-text-fill: #542b70;");                    // roxo apagado
 
                 int l = linha;
                 int c = coluna;
@@ -74,6 +77,7 @@ public class JogoDaVelha extends Application {
                 grid.add(btn, coluna, linha);
             }
         }
+
         jogadorAtual = "X";
         jogoAtivo = true;
     }
@@ -82,12 +86,19 @@ public class JogoDaVelha extends Application {
         if (!jogoAtivo || !btn.getText().isEmpty()) return;
 
         btn.setText(jogadorAtual);
-        btn.setTextFill(azulEscuro);
 
         if (jogadorAtual.equals("X")) {
-            btn.setStyle("-fx-background-color: rgb(0,0,0); -fx-text-fill: rgb(255,0,0);");
+            btn.setStyle("-fx-background-color: rgb(60,0,20);" +       // vermelho neon escuro
+                    "-fx-text-fill: " + NEON_X + ";" +
+                    "-fx-font-family: Arcade;" +
+                    "-fx-font-size: 62px;" +
+                    "-fx-effect: dropshadow(gaussian, rgba(255,60,60,1), 25, 0, 0, 0);");
         } else {
-            btn.setStyle("-fx-background-color: rgb(255,255,255); -fx-text-fill: rgb(0,53,255);");
+            btn.setStyle("-fx-background-color: rgb(0,15,40);" +      // azul neon escuro
+                    "-fx-text-fill: " + NEON_O + ";" +
+                    "-fx-font-family: Arcade;" +
+                    "-fx-font-size: 62px;" +
+                    "-fx-effect: dropshadow(gaussian, rgba(70,170,255,1), 25, 0, 0, 0);");
         }
 
         if (verificarVitoria()) {
@@ -103,8 +114,8 @@ public class JogoDaVelha extends Application {
     }
 
     private boolean verificarVitoria() {
-        // Linhas e colunas
         for (int i = 0; i < 3; i++) {
+
             if (!botoes[i][0].getText().isEmpty() &&
                     botoes[i][0].getText().equals(jogadorAtual) &&
                     botoes[i][1].getText().equals(jogadorAtual) &&
@@ -118,11 +129,10 @@ public class JogoDaVelha extends Application {
                 return true;
         }
 
-        // Diagonais
         if (!botoes[0][0].getText().isEmpty() &&
                 botoes[0][0].getText().equals(jogadorAtual) &&
                 botoes[1][1].getText().equals(jogadorAtual) &&
-                botoes[2][2].getText().equals(jogadorAtual))
+                botoes[2][2].equals(jogadorAtual))
             return true;
 
         if (!botoes[0][2].getText().isEmpty() &&
@@ -135,8 +145,8 @@ public class JogoDaVelha extends Application {
     }
 
     private int[][] coordenadasVitoria() {
-        // Retorna as coordenadas dos botões que formam a vitória
         for (int i = 0; i < 3; i++) {
+
             if (!botoes[i][0].getText().isEmpty() &&
                     botoes[i][0].getText().equals(jogadorAtual) &&
                     botoes[i][1].getText().equals(jogadorAtual) &&
@@ -153,7 +163,7 @@ public class JogoDaVelha extends Application {
         if (!botoes[0][0].getText().isEmpty() &&
                 botoes[0][0].getText().equals(jogadorAtual) &&
                 botoes[1][1].getText().equals(jogadorAtual) &&
-                botoes[2][2].getText().equals(jogadorAtual))
+                botoes[2][2].equals(jogadorAtual))
             return new int[][]{{0,0},{1,1},{2,2}};
 
         if (!botoes[0][2].getText().isEmpty() &&
@@ -166,16 +176,14 @@ public class JogoDaVelha extends Application {
     }
 
     private boolean verificarEmpate() {
-        for (Button[] linha : botoes) {
-            for (Button b : linha) {
+        for (Button[] linha : botoes)
+            for (Button b : linha)
                 if (b.getText().isEmpty()) return false;
-            }
-        }
+
         return true;
     }
 
     private void mostrarReiniciarOuMenu(String mensagem) {
-        // Usamos CONFIRMATION com dois botões: Sim e Menu
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Resultado");
         alert.setHeaderText(mensagem);
@@ -183,54 +191,58 @@ public class JogoDaVelha extends Application {
 
         ButtonType btnSim = new ButtonType("Sim");
         ButtonType btnMenu = new ButtonType("Menu");
+
         alert.getButtonTypes().setAll(btnSim, btnMenu);
 
         alert.showAndWait().ifPresent(resposta -> {
             if (resposta == btnSim) {
-                reiniciarJogo(); // apenas reinicia o tabuleiro (mesma janela)
-            } else if (resposta == btnMenu) {
-                // Abre o Menu em NOVA janela e fecha a janela atual do jogo
+                reiniciarJogo();
+            } else {
                 try {
-                    new Menu().start(new Stage()); // abre novo Stage com o menu
+                    new Menu().start(new Stage());
                 } catch (Exception ex) {
                     ex.printStackTrace();
-                } finally {
-                    primaryStage.close(); // fecha a janela do jogo (sempre)
                 }
+                primaryStage.close();
             }
         });
     }
 
     private void reiniciarJogo() {
-        jogadorAtual = "X";
         jogoAtivo = true;
+        jogadorAtual = "X";
+
         for (Button[] linha : botoes) {
             for (Button b : linha) {
                 b.setText("");
-                b.setStyle("-fx-background-color: rgb(76,74,74); -fx-text-fill: #55483b;");
+                b.setStyle("-fx-background-color: rgb(30,0,45); -fx-text-fill: #542b70;");
             }
         }
     }
 
-    private void piscarVencedor(int[][] coordenadas) {
-        if (coordenadas == null) return;
+    private void piscarVencedor(int[][] coord) {
+        if (coord == null) return;
 
-        int ciclos = 4;
-        Duration dur = Duration.millis(200);
+        for (int[] c : coord) {
+            Button btn = botoes[c[0]][c[1]];
 
-        for (int[] c : coordenadas) {
-            Button b = botoes[c[0]][c[1]];
+            for (int i = 0; i < 5; i++) {
 
-            for (int i = 0; i < ciclos; i++) {
-                PauseTransition p1 = new PauseTransition(dur.multiply(i * 2));
-                PauseTransition p2 = new PauseTransition(dur.multiply(i * 2 + 1));
+                PauseTransition p1 = new PauseTransition(Duration.millis(150 * (i * 2)));
+                PauseTransition p2 = new PauseTransition(Duration.millis(150 * (i * 2 + 1)));
 
-                p1.setOnFinished(e -> b.setStyle("-fx-background-color: yellow; -fx-text-fill:" +
-                        (jogadorAtual.equals("X") ? "rgb(255,0,0)" : "rgb(0,53,255)") + ";"));
+                // Efeito neon roxo na vitória
+                p1.setOnFinished(e ->
+                        btn.setStyle("-fx-background-color: rgb(120,0,180);" +
+                                "-fx-text-fill: white;" +
+                                "-fx-effect: dropshadow(gaussian, " + NEON_ROXO + ", 50, 0, 0, 0);"));
 
-                p2.setOnFinished(e -> b.setStyle("-fx-background-color:" +
-                        (jogadorAtual.equals("X") ? "rgb(0,0,0)" : "rgb(255,255,255)") + "; -fx-text-fill:" +
-                        (jogadorAtual.equals("X") ? "rgb(255,0,0)" : "rgb(0,53,255)") + ";"));
+                p2.setOnFinished(e -> {
+                    if (jogadorAtual.equals("X"))
+                        btn.setStyle("-fx-background-color: rgb(60,0,20); -fx-text-fill:" + NEON_X + ";");
+                    else
+                        btn.setStyle("-fx-background-color: rgb(0,15,40); -fx-text-fill:" + NEON_O + ";");
+                });
 
                 p1.play();
                 p2.play();
@@ -239,39 +251,82 @@ public class JogoDaVelha extends Application {
     }
 
     private VBox criarTitulo() {
-        Label titulo = new Label("Jogo da Velha");
-        titulo.setFont(Font.font(36));
-        titulo.setStyle("-fx-text-fill: #1a1a1a;");
+        Label titulo = new Label("JOGO DA VELHA");
+        titulo.setFont(Font.font("Arcade", 68));
 
-        VBox tituloBox = new VBox(titulo);
-        tituloBox.setAlignment(Pos.CENTER);
-        // Adiciona um padding para afastar o título das bordas e do tabuleiro
-        tituloBox.setStyle("-fx-padding: 20 0 10 0; -fx-background-color: #f0f0f0;");
-        return tituloBox;
+        // cor neon clara para aparecer em fundo escuro
+        titulo.setStyle(
+                "-fx-text-fill: #4200ae;" +  // roxo neon
+                        "-fx-font-weight: bold;"
+        );
+
+        // Glow NEON forte via DropShadow
+        DropShadow glow = new DropShadow();
+        glow.setColor(Color.web("#C900FF")); // cor do brilho
+        glow.setOffsetX(0);
+        glow.setOffsetY(0);
+        glow.setRadius(70);  // intensidade
+        glow.setSpread(0.8); // espessura
+
+        titulo.setEffect(glow);
+
+        VBox box = new VBox(titulo);
+        box.setAlignment(Pos.CENTER);
+        box.setStyle("-fx-padding: 100 0 0 0;");
+        return box;
     }
 
+
     private HBox criarBotoesControle() {
-        Button btnReiniciar = new Button("Reiniciar Jogo");
+
+        String estilo =
+                "-fx-font-family: Arcade;" +
+                        "-fx-font-size: 24px;" +
+                        "-fx-text-fill: white;" +
+                        "-fx-background-color: linear-gradient(#6a00ff, #4c00b8);" +
+                        "-fx-background-radius: 20;" +
+                        "-fx-border-radius: 20;" +
+                        "-fx-border-color: #d9b3ff;" +
+                        "-fx-border-width: 3;" +
+                        "-fx-padding: 12 28;" +
+                        "-fx-effect: dropshadow(gaussian, rgba(160,60,255,0.9), 25, 0, 0, 0);";
+
+        Button btnReiniciar = new Button("Reiniciar");
+        btnReiniciar.setStyle(estilo);
+
+        Button btnMenu = new Button("Menu");
+        btnMenu.setStyle(estilo);
+
+        // Hover neon
+        btnReiniciar.setOnMouseEntered(e -> btnReiniciar.setStyle(estilo +
+                "-fx-background-color: linear-gradient(#8a2bff, #5900cc);" +
+                "-fx-effect: dropshadow(gaussian, rgba(200,120,255,1), 35, 0, 0, 0);"));
+
+        btnReiniciar.setOnMouseExited(e -> btnReiniciar.setStyle(estilo));
+
+        btnMenu.setOnMouseEntered(e -> btnMenu.setStyle(estilo +
+                "-fx-background-color: linear-gradient(#8a2bff, #5900cc);" +
+                "-fx-effect: dropshadow(gaussian, rgba(200,120,255,1), 35, 0, 0, 0);"));
+
+        btnMenu.setOnMouseExited(e -> btnMenu.setStyle(estilo));
+
         btnReiniciar.setOnAction(e -> reiniciarJogo());
 
-        // Ação do botão Voltar ao Menu
-        Button btnVoltarMenu = new Button("Voltar ao Menu");
-        btnVoltarMenu.setOnAction(e -> {
-            AudioPlayer.stop(); // Parar a música do Jogo da Velha
+        btnMenu.setOnAction(e -> {
+            AudioPlayer.stop();
             try {
-                new Menu().start(new Stage()); // Abrir o Menu
+                new Menu().start(new Stage());
             } catch (Exception ex) {
                 ex.printStackTrace();
-            } finally {
-                primaryStage.close(); // Fechar a janela atual
             }
+            primaryStage.close();
         });
 
-        HBox controles = new HBox(15, btnReiniciar, btnVoltarMenu); // 15px de espaçamento
-        controles.setAlignment(Pos.CENTER); // Centraliza os botões na parte inferior
-        // Adiciona padding para afastar os botões do tabuleiro e da borda inferior
-        controles.setStyle("-fx-padding: 10 0 20 0;");
-        return controles;
+        HBox box = new HBox(30, btnReiniciar, btnMenu);
+        box.setAlignment(Pos.CENTER);
+        box.setStyle("-fx-padding: 20 0 45 0;");
+
+        return box;
     }
 
     public static void main(String[] args) {

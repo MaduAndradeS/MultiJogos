@@ -7,32 +7,35 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
-import javafx.scene.paint.Color; // se quiser mudar a cor do título
-import javafx.scene.text.Font;   // se quiser mudar a fonte/tamanho
+import javafx.scene.text.Font;
 import javafx.scene.layout.HBox;
 
+import java.util.Objects;
 
 public class Menu extends Application {
 
     @Override
     public void start(Stage stage) {
 
-        AudioPlayer.playLoop("/musica_menu.wav"); // música do menu
+        AudioPlayer.playLoop("/musica_menu.wav");
 
         stage.setTitle("Menu de Jogos");
 
         Label titulo = new Label("Menu de Jogos");
         titulo.getStyleClass().add("titulo-menu");
 
-        titulo.setFont(Font.font("Arial", 48));  // tamanho grande
-        titulo.setTextFill(Color.BLACK);
-        titulo.setAlignment(Pos.CENTER);
+        // fonte arcade
+        Font arcade = Font.loadFont(
+                Objects.requireNonNull(getClass().getResourceAsStream("/fonts/ARCADE.ttf")),
+                24
+        );
 
-        Image imgVelha = new Image(getClass().getResourceAsStream("/jogo_da_velha.png"), 180, 0, true, true);
+        // Imagens
+        Image imgVelha  = new Image(getClass().getResourceAsStream("/jogo_da_velha.png"), 180, 0, true, true);
         Image imgGenius = new Image(getClass().getResourceAsStream("/icone_genius.png"), 180, 0, true, true);
-        Image imgForca = new Image(getClass().getResourceAsStream("/forca.png"), 180, 0, true, true);
+        Image imgForca  = new Image(getClass().getResourceAsStream("/forca.png"), 180, 0, true, true);
 
-
+        // Botões
         Button btnJogoVelha = new Button();
         btnJogoVelha.setGraphic(new ImageView(imgVelha));
 
@@ -43,12 +46,11 @@ public class Menu extends Application {
         btnJogoForca.setGraphic(new ImageView(imgForca));
 
         Button btnSair = new Button("Sair");
-        btnSair.setMinWidth(200);
-        btnSair.setStyle("-fx-font-size: 18px; -fx-background-color:#8b0000; -fx-text-fill: white;");
 
+        // Ações dos botões
         btnJogoVelha.setOnAction(e -> {
             try {
-                AudioPlayer.stop(); // para música do menu
+                AudioPlayer.stop();
                 new JogoDaVelha().start(new Stage());
                 stage.close();
             } catch (Exception ex) { ex.printStackTrace(); }
@@ -56,7 +58,7 @@ public class Menu extends Application {
 
         btnGenius.setOnAction(e -> {
             try {
-                AudioPlayer.stop(); // para música do menu
+                AudioPlayer.stop();
                 new SimonGame().start(new Stage());
                 stage.close();
             } catch (Exception ex) { ex.printStackTrace(); }
@@ -64,20 +66,18 @@ public class Menu extends Application {
 
         btnJogoForca.setOnAction(e -> {
             try {
-                AudioPlayer.stop(); // para música do menu
+                AudioPlayer.stop();
                 new ForcaJavaFX().start(new Stage());
                 stage.close();
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+            } catch (Exception ex) { ex.printStackTrace(); }
         });
 
-
         btnSair.setOnAction(e -> {
-            AudioPlayer.stop(); // para música
+            AudioPlayer.stop();
             stage.close();
         });
 
+        // Layout
         HBox linha2 = new HBox(30, btnGenius, btnJogoForca);
         linha2.setAlignment(Pos.CENTER);
 
@@ -85,13 +85,21 @@ public class Menu extends Application {
         layout.setAlignment(Pos.CENTER);
         layout.getStyleClass().add("menu-container");
 
+        // Estilos
         btnJogoVelha.getStyleClass().add("botao-menu");
         btnGenius.getStyleClass().add("botao-menu");
         btnJogoForca.getStyleClass().add("botao-menu");
-        btnSair.getStyleClass().add("botao-menu");
 
+        // Botão sair especial (vermelho)
+        btnSair.getStyleClass().add("botao-sair");
+        btnSair.setPrefWidth(200);
+        btnSair.setPrefHeight(60);
+        btnSair.setFont(arcade);
+
+        // Cena
         Scene scene = new Scene(layout, 800, 800);
         scene.getStylesheets().add(getClass().getResource("menu.css").toExternalForm());
+
         stage.setScene(scene);
         stage.show();
     }

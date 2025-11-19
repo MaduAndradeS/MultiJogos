@@ -17,9 +17,9 @@ import javafx.util.Duration;
 import javafx.scene.layout.HBox;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import javafx.scene.text.Font;
-
 
 public class SimonGame extends Application {
 
@@ -28,13 +28,14 @@ public class SimonGame extends Application {
     private boolean acceptingInput = false;
     private boolean playingSequence = false;
 
-    private Stage primaryStage; // para voltar ao menu
+    private Stage primaryStage;
 
+    // 🎨 Cores originais do Genius — versão neon moderna
     private final Color[] baseColors = {
-            Color.web("#1D7CF2"), // azul
-            Color.web("#E6322A"), // vermelho
-            Color.web("#F2D01D"), // amarelo
-            Color.web("#29B573")  // verde
+            Color.web("#00ff6a"), // Verde neon (original)
+            Color.web("#ff2e2e"), // Vermelho neon (original)
+            Color.web("#ffe600"), // Amarelo neon (original)
+            Color.web("#1e90ff")  // Azul neon (original)
     };
 
     private final Rectangle[] tiles = new Rectangle[4];
@@ -45,25 +46,33 @@ public class SimonGame extends Application {
     public void start(Stage stage) {
         this.primaryStage = stage;
 
-        stage.setTitle("Genius - JavaFX");
+        stage.setTitle("Genius ");
 
-        // 1. --- Título ---
-        Label titulo = new Label("Jogo Genius");
-        titulo.setFont(Font.font("Arial", 36));
-        titulo.setTextFill(Color.WHITE);
-        titulo.setStyle("-fx-padding: 20 0 10 0;"); // Espaçamento acima e abaixo
+        // Fonte arcade
+        Font arcade = Font.loadFont(
+                Objects.requireNonNull(getClass().getResourceAsStream("/fonts/ARCADE.ttf")),
+                28
+        );
 
-        // --- Tabuleiro (GridPane) ---
+        // 🔥 Título neon roxo
+        Label titulo = new Label("JOGO GENIUS");
+        titulo.setFont(Font.font("Arcade", 70));
+        titulo.setTextFill(Color.web("#ffb8ff"));
+        titulo.setStyle("-fx-effect: dropshadow(gaussian, #ff4df2, 30, 0.6, 0, 0);");
+
+        // TABULEIRO ARCADE
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setPrefSize(400, 400);
+        grid.setHgap(12);
+        grid.setVgap(12);
 
         for (int i = 0; i < 4; i++) {
-            Rectangle r = new Rectangle(160, 160, baseColors[i]);
-            r.setArcWidth(30);
-            r.setArcHeight(30);
+            Rectangle r = new Rectangle(180, 180, baseColors[i]);
+            r.setArcWidth(40);
+            r.setArcHeight(40);
+
+            r.setStroke(Color.web("#ff4df2"));
+            r.setStrokeWidth(4);
 
             final int idx = i;
             r.setOnMouseClicked(e -> handlePlayerPress(idx));
@@ -72,40 +81,83 @@ public class SimonGame extends Application {
             grid.add(r, i % 2, i / 2);
         }
 
-        // --- Botões de Controle ---
-        Button btnReiniciar = new Button("Reiniciar Jogo");
-        btnReiniciar.setStyle("-fx-background-color: white; -fx-text-fill: black; -fx-font-size: 15");
-        btnReiniciar.setMinSize(180, 50); // Exemplo de aumento
-        btnReiniciar.setOnAction(e -> startNewGame());
+        // BOTÕES ARCADE ROXOS
+        Button btnReiniciar = new Button("REINICIAR");
+        estiloBotaoArcade(btnReiniciar);
 
-        Button btnVoltarMenu = new Button("Voltar ao Menu");
-        btnVoltarMenu.setStyle("-fx-background-color: white; -fx-text-fill: black; -fx-font-size: 15");
-        btnVoltarMenu.setMinSize(180, 50); // Exemplo de aumento
+        Button btnVoltarMenu = new Button("MENU");
+        estiloBotaoArcade(btnVoltarMenu);
+
+        btnReiniciar.setOnAction(e -> startNewGame());
         btnVoltarMenu.setOnAction(e -> voltarAoMenu());
 
-        HBox controles = new HBox(20, btnReiniciar, btnVoltarMenu);
+        HBox controles = new HBox(25, btnReiniciar, btnVoltarMenu);
         controles.setAlignment(Pos.CENTER);
-        controles.setStyle("-fx-padding: 10 0 20 0;"); // Espaçamento abaixo para afastar da borda
+        controles.setStyle("-fx-padding: 10 0 20 0;");
 
-        // Botão Start que será removido e o jogo iniciará no primeiro clique
-        // Opcional: Se quiser que o jogo comece imediatamente, você pode chamar startNewGame() aqui
+        // Rodada neon
+        roundLabel.setFont(Font.font("Arcade", 32));
+        roundLabel.setTextFill(Color.web("#ffbfff"));
+        roundLabel.setStyle("-fx-effect: dropshadow(gaussian, #ff4df2, 20, 0.4, 0, 0);");
 
-        // --- Layout Principal (VBox) ---
-        // Ordem: Título, roundLabel, Tabuleiro, Controles
-        VBox layout = new VBox(20, titulo, roundLabel, grid, controles);
+        // LAYOUT PRINCIPAL
+        VBox layout = new VBox(25, titulo, roundLabel, grid, controles);
         layout.setAlignment(Pos.CENTER);
-        layout.setStyle("-fx-background-color:#222;");
 
-        roundLabel.setTextFill(Color.WHITE);
-        roundLabel.setStyle("-fx-font-size: 22px;");
+        layout.setStyle(
+                "-fx-background-image: url(fundogenius.png); -fx-background-size: cover; " +
+                        "-fx-background-repeat: no-repeat; -fx-background-position: center center;"
+        );
 
         Scene scene = new Scene(layout, 800, 800);
         stage.setScene(scene);
         stage.show();
 
-        // Inicia o jogo imediatamente ao carregar
         startNewGame();
     }
+
+    // --------------------------------------------
+    //        ESTILO ARCADE DOS BOTÕES
+    // --------------------------------------------
+
+    private void estiloBotaoArcade(Button b) {
+        b.setMinSize(230, 65);
+        b.setFont(Font.font("Arcade", 26));
+        b.setTextFill(Color.WHITE);
+
+        b.setStyle(
+                "-fx-background-color: rgba(255, 77, 242, 0.25);" +
+                        "-fx-border-color: #ff4df2;" +
+                        "-fx-border-width: 3px;" +
+                        "-fx-border-radius: 20px;" +
+                        "-fx-background-radius: 20px;" +
+                        "-fx-cursor: hand;" +
+                        "-fx-effect: dropshadow(gaussian, rgba(255,77,242,0.6), 18, 0.3, 0, 0);"
+        );
+
+        b.setOnMouseEntered(e -> b.setStyle(
+                "-fx-background-color: rgba(255, 77, 242, 0.45);" +
+                        "-fx-border-color: #ff99f7;" +
+                        "-fx-border-width: 3px;" +
+                        "-fx-border-radius: 20px;" +
+                        "-fx-background-radius: 20px;" +
+                        "-fx-effect: dropshadow(gaussian, rgba(255,77,242,0.9), 25, 0.4, 0, 0);"
+        ));
+
+        b.setOnMouseExited(e -> b.setStyle(
+                "-fx-background-color: rgba(255, 77, 242, 0.25);" +
+                        "-fx-border-color: #ff4df2;" +
+                        "-fx-border-width: 3px;" +
+                        "-fx-border-radius: 20px;" +
+                        "-fx-background-radius: 20px;" +
+                        "-fx-effect: dropshadow(gaussian, rgba(255,77,242,0.6), 18, 0.3, 0, 0);"
+        ));
+    }
+
+    // --------------------------------------------
+    //            LÓGICA DO JOGO
+    // --------------------------------------------
+
     private void startNewGame() {
         sequence.clear();
         playerMoves.clear();
@@ -187,68 +239,57 @@ public class SimonGame extends Application {
         playingSequence = false;
         acceptingInput = false;
 
-        for (Rectangle r : tiles) {
+        for (Rectangle r : tiles)
             r.setFill(Color.WHITE);
-        }
 
         playErrorSound();
 
         PauseTransition pause = new PauseTransition(Duration.millis(700));
         pause.setOnFinished(e -> {
-
-            // volta às cores normais antes de perguntar
             for (int i = 0; i < 4; i++)
                 tiles[i].setFill(baseColors[i]);
 
-            perguntarVoltarMenu();  // <-- AQUI
+            perguntarVoltarMenu();
         });
         pause.play();
     }
 
     private void perguntarVoltarMenu() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Fim de jogo");
+        alert.setHeaderText("Você errou!");
+        alert.setContentText("O que deseja fazer?");
 
-        javafx.application.Platform.runLater(() -> {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Fim de jogo");
-            alert.setHeaderText("Você errou!");
-            alert.setContentText("O que você deseja ?");
+        ButtonType menu = new ButtonType("Menu");
+        ButtonType retry = new ButtonType("Jogar Novamente");
 
-            ButtonType sim = new ButtonType("Menu");
-            ButtonType nao = new ButtonType("Jogar Novamente");
+        alert.getButtonTypes().setAll(menu, retry);
 
-            alert.getButtonTypes().setAll(sim, nao);
-
-            alert.showAndWait().ifPresent(res -> {
-                if (res == sim) {
-                    try {
-                        primaryStage.close();
-                        new Menu().start(new Stage());
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                } else {
-                    startNewGame();
-                }
-            });
+        alert.showAndWait().ifPresent(res -> {
+            if (res == menu) {
+                try {
+                    primaryStage.close();
+                    new Menu().start(new Stage());
+                } catch (Exception ex) { ex.printStackTrace(); }
+            } else {
+                startNewGame();
+            }
         });
     }
 
-
     private void playSound(int index) {
         switch (index) {
-            case 0 -> SoundGenerator.playTone(440, 300); // Azul
-            case 1 -> SoundGenerator.playTone(554, 300); // Vermelho
-            case 2 -> SoundGenerator.playTone(659, 300); // Amarelo
-            case 3 -> SoundGenerator.playTone(784, 300); // Verde
+            case 0 -> SoundGenerator.playTone(440, 300);
+            case 1 -> SoundGenerator.playTone(554, 300);
+            case 2 -> SoundGenerator.playTone(659, 300);
+            case 3 -> SoundGenerator.playTone(784, 300);
         }
     }
 
     private void voltarAoMenu() {
-
         try {
-
             new Menu().start(new Stage());
-            primaryStage.close(); // Fecha a janela do Jogo Genius
+            primaryStage.close();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
