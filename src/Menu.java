@@ -24,18 +24,15 @@ public class Menu extends Application {
         Label titulo = new Label("Menu de Jogos");
         titulo.getStyleClass().add("titulo-menu");
 
-        // fonte arcade
         Font arcade = Font.loadFont(
                 Objects.requireNonNull(getClass().getResourceAsStream("/fonts/ARCADE.ttf")),
                 24
         );
 
-        // Imagens
         Image imgVelha  = new Image(getClass().getResourceAsStream("/jogo_da_velha.png"), 180, 0, true, true);
         Image imgGenius = new Image(getClass().getResourceAsStream("/icone_genius.png"), 180, 0, true, true);
         Image imgForca  = new Image(getClass().getResourceAsStream("/forca.png"), 180, 0, true, true);
 
-        // Botões
         Button btnJogoVelha = new Button();
         btnJogoVelha.setGraphic(new ImageView(imgVelha));
 
@@ -47,7 +44,6 @@ public class Menu extends Application {
 
         Button btnSair = new Button("Sair");
 
-        // Ações dos botões
         btnJogoVelha.setOnAction(e -> {
             try {
                 AudioPlayer.stop();
@@ -77,7 +73,6 @@ public class Menu extends Application {
             stage.close();
         });
 
-        // Layout
         HBox linha2 = new HBox(30, btnGenius, btnJogoForca);
         linha2.setAlignment(Pos.CENTER);
 
@@ -85,18 +80,15 @@ public class Menu extends Application {
         layout.setAlignment(Pos.CENTER);
         layout.getStyleClass().add("menu-container");
 
-        // Estilos
         btnJogoVelha.getStyleClass().add("botao-menu");
         btnGenius.getStyleClass().add("botao-menu");
         btnJogoForca.getStyleClass().add("botao-menu");
 
-        // Botão sair especial (vermelho)
         btnSair.getStyleClass().add("botao-sair");
         btnSair.setPrefWidth(200);
         btnSair.setPrefHeight(60);
         btnSair.setFont(arcade);
 
-        // Cena
         Scene scene = new Scene(layout, 800, 800);
         scene.getStylesheets().add(getClass().getResource("menu.css").toExternalForm());
 

@@ -5,7 +5,6 @@ public class AudioPlayer {
 
     private static Clip clip;
 
-    // Toca música em loop
     public static void playLoop(String caminho) {
         stop(); // para música anterior, se houver
         try {
@@ -25,7 +24,6 @@ public class AudioPlayer {
         }
     }
 
-    // Para a música
     public static void stop() {
         if (clip != null && clip.isRunning()) {
             clip.stop();

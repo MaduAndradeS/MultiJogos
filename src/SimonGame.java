@@ -30,12 +30,11 @@ public class SimonGame extends Application {
 
     private Stage primaryStage;
 
-    // 🎨 Cores originais do Genius — versão neon moderna
     private final Color[] baseColors = {
-            Color.web("#00ff6a"), // Verde neon (original)
-            Color.web("#ff2e2e"), // Vermelho neon (original)
-            Color.web("#ffe600"), // Amarelo neon (original)
-            Color.web("#1e90ff")  // Azul neon (original)
+            Color.web("#00ff6a"),
+            Color.web("#ff2e2e"),
+            Color.web("#ffe600"),
+            Color.web("#1e90ff")
     };
 
     private final Rectangle[] tiles = new Rectangle[4];
@@ -48,19 +47,16 @@ public class SimonGame extends Application {
 
         stage.setTitle("Genius ");
 
-        // Fonte arcade
         Font arcade = Font.loadFont(
                 Objects.requireNonNull(getClass().getResourceAsStream("/fonts/ARCADE.ttf")),
                 28
         );
 
-        // 🔥 Título neon roxo
         Label titulo = new Label("JOGO GENIUS");
         titulo.setFont(Font.font("Arcade", 70));
         titulo.setTextFill(Color.web("#ffb8ff"));
         titulo.setStyle("-fx-effect: dropshadow(gaussian, #ff4df2, 30, 0.6, 0, 0);");
 
-        // TABULEIRO ARCADE
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(12);
@@ -81,7 +77,6 @@ public class SimonGame extends Application {
             grid.add(r, i % 2, i / 2);
         }
 
-        // BOTÕES ARCADE ROXOS
         Button btnReiniciar = new Button("REINICIAR");
         estiloBotaoArcade(btnReiniciar);
 
@@ -95,12 +90,10 @@ public class SimonGame extends Application {
         controles.setAlignment(Pos.CENTER);
         controles.setStyle("-fx-padding: 10 0 20 0;");
 
-        // Rodada neon
         roundLabel.setFont(Font.font("Arcade", 32));
         roundLabel.setTextFill(Color.web("#ffbfff"));
         roundLabel.setStyle("-fx-effect: dropshadow(gaussian, #ff4df2, 20, 0.4, 0, 0);");
 
-        // LAYOUT PRINCIPAL
         VBox layout = new VBox(25, titulo, roundLabel, grid, controles);
         layout.setAlignment(Pos.CENTER);
 
@@ -116,9 +109,7 @@ public class SimonGame extends Application {
         startNewGame();
     }
 
-    // --------------------------------------------
-    //        ESTILO ARCADE DOS BOTÕES
-    // --------------------------------------------
+
 
     private void estiloBotaoArcade(Button b) {
         b.setMinSize(230, 65);
@@ -154,9 +145,6 @@ public class SimonGame extends Application {
         ));
     }
 
-    // --------------------------------------------
-    //            LÓGICA DO JOGO
-    // --------------------------------------------
 
     private void startNewGame() {
         sequence.clear();

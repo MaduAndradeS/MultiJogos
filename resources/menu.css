@@ -1,6 +1,4 @@
-/* ================================================
-   MENU — ESTILO ARCADE AZUL
-   ================================================ */
+
 
 .menu-container {
     -fx-background-image: url("menufundo.png");
@@ -12,9 +10,6 @@
     -fx-background-color: linear-gradient(to bottom, #06081f, #131f55, #06081f);
 }
 
-/* ================================================
-   TÍTULO DO MENU — ARCADE AZUL NEON (MAIS ESCURO)
-   ================================================ */
 
 .titulo-menu {
     -fx-font-size: 80px;
@@ -26,9 +21,7 @@
     -fx-effect: dropshadow(gaussian, rgba(30,80,160,0.6), 20, 0.25, 0, 0);
 }
 
-/* ================================================
-   BOTÕES — ARCADE AZUL, BORDAS NEON
-   ================================================ */
+
 
 .botao-menu {
     -fx-background-color: rgba(255, 255, 255, 0.10);
@@ -50,9 +43,7 @@
     -fx-effect: dropshadow(gaussian, rgba(74,168,255,0.45), 15, 0.2, 0, 0);
 }
 
-/* ================================================
-   HOVER — LUZ AZUL MAIS FORTE
-   ================================================ */
+
 
 .botao-menu:hover {
     -fx-background-color: rgba(74, 168, 255, 0.25);
@@ -61,9 +52,6 @@
     -fx-effect: dropshadow(gaussian, rgba(74,168,255,0.8), 18, 0.3, 0, 0);
 }
 
-/* ================================================
-   PRESS — AFUNDA LEVE
-   ================================================ */
 
 .botao-menu:pressed {
     -fx-background-color: rgba(74, 168, 255, 0.35);
@@ -71,9 +59,7 @@
     -fx-effect: none;
 }
 
-/* ================================================
-   BOTÃO SAIR — ARCADE VERMELHO NEON
-   ================================================ */
+
 
 .botao-sair {
     -fx-background-color: rgba(255, 0, 0, 0.2);

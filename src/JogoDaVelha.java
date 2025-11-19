@@ -23,10 +23,9 @@ public class JogoDaVelha extends Application {
     private String jogadorAtual = "X";
     private boolean jogoAtivo = true;
 
-    // Cores neon
-    private final String NEON_X = "rgb(255,60,60)";      // vermelho neon
-    private final String NEON_O = "rgb(70,170,255)";     // azul neon
-    private final String NEON_ROXO = "rgb(160,60,255)";  // roxo neon
+    private final String NEON_X = "rgb(255,60,60)";
+    private final String NEON_O = "rgb(70,170,255)";
+    private final String NEON_ROXO = "rgb(160,60,255)";
 
     @Override
     public void start(Stage stage) {
@@ -65,7 +64,6 @@ public class JogoDaVelha extends Application {
                 btn.setFont(Font.font("Arcade", 50));
                 btn.setMinSize(150, 150);
 
-                // Cor neutra roxa escura neon
                 btn.setStyle("-fx-background-color: rgb(30,0,45);" +   // roxo escuro
                         "-fx-text-fill: #542b70;");                    // roxo apagado
 
@@ -88,13 +86,13 @@ public class JogoDaVelha extends Application {
         btn.setText(jogadorAtual);
 
         if (jogadorAtual.equals("X")) {
-            btn.setStyle("-fx-background-color: rgb(60,0,20);" +       // vermelho neon escuro
+            btn.setStyle("-fx-background-color: rgb(60,0,20);" +
                     "-fx-text-fill: " + NEON_X + ";" +
                     "-fx-font-family: Arcade;" +
                     "-fx-font-size: 62px;" +
                     "-fx-effect: dropshadow(gaussian, rgba(255,60,60,1), 25, 0, 0, 0);");
         } else {
-            btn.setStyle("-fx-background-color: rgb(0,15,40);" +      // azul neon escuro
+            btn.setStyle("-fx-background-color: rgb(0,15,40);" +
                     "-fx-text-fill: " + NEON_O + ";" +
                     "-fx-font-family: Arcade;" +
                     "-fx-font-size: 62px;" +
@@ -231,7 +229,6 @@ public class JogoDaVelha extends Application {
                 PauseTransition p1 = new PauseTransition(Duration.millis(150 * (i * 2)));
                 PauseTransition p2 = new PauseTransition(Duration.millis(150 * (i * 2 + 1)));
 
-                // Efeito neon roxo na vitória
                 p1.setOnFinished(e ->
                         btn.setStyle("-fx-background-color: rgb(120,0,180);" +
                                 "-fx-text-fill: white;" +
@@ -254,13 +251,11 @@ public class JogoDaVelha extends Application {
         Label titulo = new Label("JOGO DA VELHA");
         titulo.setFont(Font.font("Arcade", 68));
 
-        // cor neon clara para aparecer em fundo escuro
         titulo.setStyle(
                 "-fx-text-fill: #4200ae;" +  // roxo neon
                         "-fx-font-weight: bold;"
         );
 
-        // Glow NEON forte via DropShadow
         DropShadow glow = new DropShadow();
         glow.setColor(Color.web("#C900FF")); // cor do brilho
         glow.setOffsetX(0);
@@ -297,7 +292,6 @@ public class JogoDaVelha extends Application {
         Button btnMenu = new Button("Menu");
         btnMenu.setStyle(estilo);
 
-        // Hover neon
         btnReiniciar.setOnMouseEntered(e -> btnReiniciar.setStyle(estilo +
                 "-fx-background-color: linear-gradient(#8a2bff, #5900cc);" +
                 "-fx-effect: dropshadow(gaussian, rgba(200,120,255,1), 35, 0, 0, 0);"));

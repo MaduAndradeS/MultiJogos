@@ -55,7 +55,6 @@ public class ForcaJavaFX extends Application {
                 "-fx-background-size: cover;" +
                 "-fx-background-repeat: no-repeat;");
 
-        // ------- TÍTULO -------
         VBox topBox = new VBox(6);
         topBox.setAlignment(Pos.CENTER);
 
@@ -80,10 +79,8 @@ public class ForcaJavaFX extends Application {
         topBox.getChildren().addAll(titulo, lblProgresso, lblErros);
         root.setTop(topBox);
 
-        // ------- CANVAS (AGORA TRANSPARENTE) -------
         canvas = new Canvas(400, 400);
 
-        // Remover fundo pintado → não usar fillRect
         canvas.setStyle("-fx-background-color: transparent;");
 
         desenharForca();
@@ -93,7 +90,6 @@ public class ForcaJavaFX extends Application {
         centerBox.setPadding(new Insets(12));
         root.setCenter(centerBox);
 
-        // ---- TECLADO ORIGINAL ----
         VBox bottom = new VBox(8);
         FlowPane teclado = new FlowPane();
         teclado.setHgap(6);
@@ -122,7 +118,6 @@ public class ForcaJavaFX extends Application {
         }
 
 
-        // ------- BOTÕES DE CONTROLE -------
         HBox controles = new HBox(10);
         controles.setAlignment(Pos.CENTER);
 
@@ -246,11 +241,7 @@ public class ForcaJavaFX extends Application {
     private void desenharForca() {
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
-        // ❌ Removido o fundo preenchido
-        // gc.setFill(Color.web("#111"));
-        // gc.fillRect(...)
 
-        // Apenas desenhar a forca neon diretamente no fundo transparente
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
         gc.setStroke(Color.web("#00ff7f"));
