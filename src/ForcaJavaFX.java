@@ -19,9 +19,12 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ForcaJavaFX extends Application {
+
+    private static final Logger LOGGER = Logger.getLogger(ForcaJavaFX.class.getName());
 
     private static final List<String> PALAVRAS = Arrays.asList(
             "COMPUTADOR","PROGRAMACAO","JAVA","ALGORITMO","ESTRUTURA",
@@ -33,7 +36,7 @@ public class ForcaJavaFX extends Application {
 
     private String palavra;
     private char[] progresso;
-    private List<Character> letrasErradas = new ArrayList<>();
+    private final List<Character> letrasErradas = new ArrayList<>();
     private int erros = 0;
     private static final int MAX_ERROS = 6;
 
@@ -58,7 +61,7 @@ public class ForcaJavaFX extends Application {
         VBox topBox = new VBox(6);
         topBox.setAlignment(Pos.CENTER);
 
-        Label titulo = new Label("FORCA NEON");
+        Label titulo = new Label("FORCA");
         titulo.setFont(Font.font("Arcade", 60));
         titulo.setTextFill(Color.web("#00ff7f"));
 
@@ -72,7 +75,7 @@ public class ForcaJavaFX extends Application {
         lblProgresso.setFont(Font.font("Arcade", 40));
         lblProgresso.setTextFill(Color.web("#00ff7f"));
 
-        lblErros = new Label("Letras erradas: ");
+        lblErros = new Label("Letras erradas:");
         lblErros.setFont(Font.font("Arcade", 22));
         lblErros.setTextFill(Color.web("#00ff7f"));
 
@@ -80,9 +83,7 @@ public class ForcaJavaFX extends Application {
         root.setTop(topBox);
 
         canvas = new Canvas(400, 400);
-
         canvas.setStyle("-fx-background-color: transparent;");
-
         desenharForca();
 
         HBox centerBox = new HBox(canvas);
@@ -99,7 +100,7 @@ public class ForcaJavaFX extends Application {
 
         for (char c = 'A'; c <= 'Z'; c++) {
             Button btn = new Button(String.valueOf(c));
-            btn.setPrefSize(45, 45); // 🔹 TAMANHO ANTIGO
+            btn.setPrefSize(45, 45);
             btn.setFont(Font.font("Arcade", 20));
 
             btn.setStyle(
@@ -109,7 +110,7 @@ public class ForcaJavaFX extends Application {
                             "-fx-text-fill: #00ff7f;"
             );
 
-            btn.setOnAction(e -> {
+            btn.setOnAction(_ -> {
                 btn.setDisable(true);
                 processarPalpite(btn.getText().charAt(0), primaryStage);
             });
@@ -117,22 +118,21 @@ public class ForcaJavaFX extends Application {
             teclado.getChildren().add(btn);
         }
 
-
         HBox controles = new HBox(10);
         controles.setAlignment(Pos.CENTER);
 
         Button btnReiniciar = criarBotaoNeon("Reiniciar");
-        btnReiniciar.setOnAction(e -> reiniciarJogo(root));
+        btnReiniciar.setOnAction(_ -> reiniciarJogo(root));
 
         Button btnDesistir = criarBotaoNeon("Revelar Palavra");
         btnDesistir.setTooltip(new Tooltip("Mostra a palavra"));
-        btnDesistir.setOnAction(e -> {
+        btnDesistir.setOnAction(_ -> {
             mostrarAlerta("Palavra", "A palavra era: " + palavra);
             reiniciarJogo(root);
         });
 
         Button btnMenu = criarBotaoNeon("Menu");
-        btnMenu.setOnAction(e -> voltarAoMenu(primaryStage));
+        btnMenu.setOnAction(_ -> voltarAoMenu(primaryStage));
 
         controles.getChildren().addAll(btnReiniciar, btnDesistir, btnMenu);
 
@@ -144,7 +144,7 @@ public class ForcaJavaFX extends Application {
         root.setBottom(bottom);
 
         primaryStage.setScene(new Scene(root, 800, 800));
-        primaryStage.setTitle("Forca Neon");
+        primaryStage.setTitle("Jogo da Forca");
         primaryStage.show();
     }
 
@@ -170,8 +170,7 @@ public class ForcaJavaFX extends Application {
     }
 
     private String getProgressoFormatado() {
-        return Arrays.stream(new String(progresso).split(""))
-                .collect(Collectors.joining(" "));
+        return String.join(" ", new String(progresso).split(""));
     }
 
     private void processarPalpite(char letra, Stage stage) {
@@ -196,9 +195,13 @@ public class ForcaJavaFX extends Application {
 
     private void atualizarInterface() {
         lblProgresso.setText(getProgressoFormatado());
-        lblErros.setText("Erradas: " +
-                letrasErradas.stream().map(String::valueOf).collect(Collectors.joining(" "))
-                + " (" + erros + "/" + MAX_ERROS + ")");
+        lblErros.setText(
+                "Erradas: " + letrasErradas.stream()
+                        .map(String::valueOf)
+                        .reduce((a, b) -> a + " " + b)
+                        .orElse("") +
+                        " (" + erros + "/" + MAX_ERROS + ")"
+        );
     }
 
     private void checarFim(Stage stage) {
@@ -226,7 +229,7 @@ public class ForcaJavaFX extends Application {
             new Menu().start(new Stage());
             stage.close();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Erro ao abrir menu", ex);
         }
     }
 
@@ -240,7 +243,6 @@ public class ForcaJavaFX extends Application {
 
     private void desenharForca() {
         GraphicsContext gc = canvas.getGraphicsContext2D();
-
 
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 

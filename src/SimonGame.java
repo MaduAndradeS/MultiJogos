@@ -2,6 +2,7 @@ import javafx.animation.FillTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -237,10 +238,11 @@ public class SimonGame extends Application {
             for (int i = 0; i < 4; i++)
                 tiles[i].setFill(baseColors[i]);
 
-            perguntarVoltarMenu();
+            Platform.runLater(this::perguntarVoltarMenu); // ✔ CORREÇÃO
         });
         pause.play();
     }
+
 
     private void perguntarVoltarMenu() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
