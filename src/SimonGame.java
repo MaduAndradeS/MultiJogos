@@ -238,7 +238,7 @@ public class SimonGame extends Application {
             for (int i = 0; i < 4; i++)
                 tiles[i].setFill(baseColors[i]);
 
-            Platform.runLater(this::perguntarVoltarMenu); // ✔ CORREÇÃO
+            Platform.runLater(this::perguntarVoltarMenu);
         });
         pause.play();
     }

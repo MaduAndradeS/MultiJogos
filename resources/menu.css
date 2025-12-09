@@ -5,18 +5,16 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
 
-    /* Fundo com atmosfera arcade azul */
     -fx-background-color: linear-gradient(to bottom, #06081f, #131f55, #06081f);
 }
 
 
 .titulo-menu {
     -fx-font-size: 80px;
-    -fx-text-fill: #2b6bb8; /* Azul neon mais escuro */
+    -fx-text-fill: #2b6bb8;
     -fx-font-family: Arcade;
     -fx-font-weight: bold;
 
-    /* Brilho mais discreto */
     -fx-effect: dropshadow(gaussian, rgba(30,80,160,0.6), 20, 0.25, 0, 0);
 }
 
@@ -26,7 +24,6 @@
     -fx-background-color: rgba(255, 255, 255, 0.10);
     -fx-cursor: hand;
 
-    /* borda neon azul */
     -fx-border-color: #4aa8ff;
     -fx-border-width: 3px;
     -fx-border-radius: 20px;

@@ -9,7 +9,7 @@ public class AudioPlayer {
     private static Clip clip;
 
     public static void playLoop(String caminho) {
-        stop(); // para música anterior, se houver
+        stop();
 
         try {
             InputStream audioSrc = AudioPlayer.class.getResourceAsStream(caminho);

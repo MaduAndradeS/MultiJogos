@@ -38,7 +38,6 @@ public class JogoDaVelha extends Application {
         this.primaryStage = stage;
         stage.setTitle("Jogo da Velha");
 
-        // Escolha de modo
         Alert escolherModo = new Alert(Alert.AlertType.CONFIRMATION);
         escolherModo.setTitle("Modo de Jogo");
         escolherModo.setHeaderText("Escolha o modo de jogo:");
@@ -120,7 +119,6 @@ public class JogoDaVelha extends Application {
                 """.formatted(NEON_O));
         }
 
-        // Verifica vitória
         if (verificarVitoria(jogadorAtual)) {
             jogoAtivo = false;
             piscarVencedor(coordenadasVitoria(jogadorAtual), jogadorAtual,
@@ -134,7 +132,6 @@ public class JogoDaVelha extends Application {
             return;
         }
 
-        // Alterna jogador ou chama IA
         if (contraIA) {
             if (jogadorAtual.equals("X")) {
                 jogadorAtual = "O";
@@ -158,7 +155,6 @@ public class JogoDaVelha extends Application {
         }
     }
 
-    // ---------- restante do código permanece igual ----------
 
     private boolean verificarVitoria(String simbolo) {
         for (int i = 0; i < 3; i++) {
